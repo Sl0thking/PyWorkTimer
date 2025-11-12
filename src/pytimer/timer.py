@@ -12,6 +12,7 @@ class WorkTimer:
 
     def track_day(self, date=None):
         if self.curr_date and self.curr_date == date:
+            print("No new tracking")
             return
 
         if self.work_timer.duration() < timedelta(0):
@@ -45,6 +46,8 @@ class WorkTimer:
         self.refresh()
 
     def refresh(self):
+        print(self.work_timer.duration())
+        print(self.pause_timer.duration())
         self.work_times[self.curr_date]["work"] = self.work_timer.duration()
         self.work_times[self.curr_date]["pause"] = self.pause_timer.duration()
 
@@ -90,7 +93,7 @@ class Timer:
         if not self.start_time:
             return
 
-        self.time = datetime.now() - self.start_time
+        self.time += datetime.now() - self.start_time
         self.start_time = None
 
     def duration(self):
