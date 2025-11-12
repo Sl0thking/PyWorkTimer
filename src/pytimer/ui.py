@@ -65,8 +65,6 @@ def timer_process():
     global pause_label
     global root
 
-    print(timer.to_json())
-
     if screen_locked and not is_screen_locked():
         unpause()
         screen_locked = False

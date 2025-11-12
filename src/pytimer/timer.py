@@ -46,8 +46,6 @@ class WorkTimer:
         self.refresh()
 
     def refresh(self):
-        print(self.work_timer.duration())
-        print(self.pause_timer.duration())
         self.work_times[self.curr_date]["work"] = self.work_timer.duration()
         self.work_times[self.curr_date]["pause"] = self.pause_timer.duration()
 

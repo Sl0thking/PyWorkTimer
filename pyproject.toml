@@ -10,4 +10,4 @@ dependencies = [
 ]
 
 [project.scripts]
-cli-name = "pytimer.ui:main"
+worktimer = "pytimer.ui:main"
