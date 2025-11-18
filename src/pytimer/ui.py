@@ -1,12 +1,16 @@
+import json
+import os.path
 from datetime import datetime
 from tkinter import Tk, ttk, font
 import subprocess
-
+from pathlib import Path
 from pytimer.timer import WorkTimer
 
 timer = WorkTimer()
-screen_locked = False
 curr_day = datetime.now().strftime("%d.%m.%Y")
+timer.track_day(curr_day)
+
+screen_locked = False
 
 start_btn = None
 pause_btn = None
@@ -14,12 +18,24 @@ label = None
 pause_label = None
 root = None
 
+def prepare_timer():
+    global timer
+
+    home = Path.home()
+
+    if not os.path.exists(home / "timer.json"):
+        return
+
+    with open(home / "timer.json", "r") as timer_handle:
+         json_obj = json.load(timer_handle)
+
+    timer.from_json(json_obj)
+
 def start():
     global timer
     global start_btn
     global curr_day
 
-    timer.track_day(curr_day)
     timer.start()
 
     start_btn["command"] = stop
@@ -57,6 +73,19 @@ def is_screen_locked():
     outputstringall = str(outputall)
     return process_name in outputstringall
 
+def save_timer():
+    global timer
+    global root
+
+    json_timer = timer.to_json()
+
+    home = Path.home()
+
+    with open(home / "timer.json", "w+") as timer_handle:
+         json.dump(json.loads(json_timer), timer_handle)
+
+    root.after(5000, save_timer)
+
 def timer_process():
     global timer
     global screen_locked
@@ -84,6 +113,8 @@ def main():
     global pause_label
     global label
 
+    prepare_timer()
+
     root = Tk()
     root.title("Time")
 
@@ -108,6 +139,7 @@ def main():
 
     root.rowconfigure(0, weight=3)
     root.after(1000, timer_process)
+    root.after(10000, save_timer)
     root.mainloop()
 
 if __name__ == "__main__":

@@ -3,6 +3,10 @@ from datetime import datetime, timedelta
 import time
 
 
+def get_timedelta_from_str(delta_str):
+    t = datetime.strptime(delta_str.split(".")[0], "%H:%M:%S")
+    return timedelta(hours=t.hour, minutes=t.minute, seconds=t.second)
+
 class WorkTimer:
     def __init__(self):
         self.work_timer = Timer()
@@ -70,6 +74,12 @@ class WorkTimer:
             }
 
         return json.dumps(decoded_json)
+
+    def from_json(self, json_dict):
+        self.work_times = json_dict
+        self.work_timer.time = get_timedelta_from_str(json_dict[self.curr_date]["work"])
+        self.pause_timer.time = get_timedelta_from_str(json_dict[self.curr_date]["pause"])
+        self.refresh()
 
 class Timer:
 
