@@ -8,8 +8,6 @@ from pytimer.timer import WorkTimer
 
 timer = WorkTimer()
 curr_day = datetime.now().strftime("%d.%m.%Y")
-timer.track_day(curr_day)
-
 screen_locked = False
 
 start_btn = None
@@ -112,8 +110,12 @@ def main():
     global root
     global pause_label
     global label
+    global timer
+    global curr_day
 
+    timer.track_day(curr_day)
     prepare_timer()
+    timer.track_day(curr_day)
 
     root = Tk()
     root.title("Time")

@@ -77,9 +77,10 @@ class WorkTimer:
 
     def from_json(self, json_dict):
         self.work_times = json_dict
-        self.work_timer.time = get_timedelta_from_str(json_dict[self.curr_date]["work"])
-        self.pause_timer.time = get_timedelta_from_str(json_dict[self.curr_date]["pause"])
-        self.refresh()
+        if self.curr_date in json_dict:
+            self.work_timer.time = get_timedelta_from_str(json_dict[self.curr_date]["work"])
+            self.pause_timer.time = get_timedelta_from_str(json_dict[self.curr_date]["pause"])
+            self.refresh()
 
 class Timer:
 
